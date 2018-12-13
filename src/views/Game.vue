@@ -1,8 +1,8 @@
 <template>
 <div >
-    <div v-for="(dot,indexRow) in row" :key="'row' + indexRow">
+    <div v-for="(dot,indexRow) in boardRow" :key="'row' + indexRow">
         <span
-            v-for="(dot, indexCol) in col" 
+            v-for="(dot, indexCol) in boardCol" 
             :key="'col' + indexCol" 
             @click='colClicked(indexRow,indexCol)'
             >
@@ -27,25 +27,34 @@ export default {
     data() {
         return {
             test: true,
-            row: 6,
-            col: 7,
+            boardRow: 6,
+            boardCol: 7,
             board: []
         }
     },
     methods: {
         colClicked(row, col) {
             console.log(row,col)
-            this.$set(this.board[row], col, 'green')
-            // this.board[row][col] = 'green'
+            let newRow = this.boardRow - 1;
+            // console.log(this.board[5])
+            for(let i = this.boardRow - 1; i >= 0; i-- ) {
+                console.log(this.board[i][col])
+                if(this.board[i][col] == 'empty') {
+                    newRow = i ;
+                    console.log("oeoeotoe", i)
+                    break
+                }
+            }
+            this.$set(this.board[newRow], col, 'green')
         }
     },
 
     created() {
         let board = []
         
-        for(let i = 0; i < this.row; i++){
+        for(let i = 0; i < this.boardRow; i++){
             board.push([])
-            for(let j= 0; j < this.col; j++){
+            for(let j= 0; j < this.boardCol; j++){
                 board[i].push('empty')
             }
         }
