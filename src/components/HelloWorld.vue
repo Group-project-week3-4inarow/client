@@ -1,9 +1,9 @@
 <template>
   <div class="hello">
-    <form>
+    <form @submit.prevent="writeUserData">
       Room Name:<br>
       <input type="text" name="roomName" v-model="roomName"><br>
-      <input type="button" @click="writeUserData" value="SUBMIT!">
+      <input type="button" value="SUBMIT!">
     </form>
     <div class="col-sm-4" >
       <table style="width:100%" v-for="room in rooms" :key="room._id">
@@ -34,9 +34,16 @@ export default {
   },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
   methods: {
     writeUserData() {
-      db.ref('rooms/' + this.roomName)
-      .set({
+      let profile = {
+        name: localStorage.getItem('name')
+      }
+      db.ref('rooms/')
+      .push({
         name: this.roomName,
+        player1: profile,
+        player2: {},
+        turn: 'player1',
+        board: [[12],[13]]
       });
     },
     readDB() {
