@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <form @submit.prevent="writeUserData">
+    <form @submit.prevent="writeRoomData">
       Room Name:<br>
       <input type="text" name="roomName" v-model="roomName"><br>
       <input type="button" value="SUBMIT!">
@@ -33,17 +33,18 @@ export default {
     msg: String
   },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
   methods: {
-    writeUserData() {
+    writeRoomData() {
       let profile = {
         name: localStorage.getItem('name')
       }
+      console.log('oettttt bos')
       db.ref('rooms/')
       .push({
         name: this.roomName,
         player1: profile,
         player2: {},
         turn: 'player1',
-        board: [[12],[13]]
+        board: [[123]]
       });
     },
     readDB() {

@@ -10,8 +10,11 @@
             <span v-if="board[indexRow][indexCol] === 'empty'">
                 <span class="dot mr-1" ></span>
             </span>
-            <span v-else>
+            <span v-else-if="board[indexRow][indexCol] === 'green'">
                 <span class="dot mr-1 green" ></span>
+            </span>
+            <span v-else>
+                <span class="dot mr-1 red" ></span>
             </span>
         </span>
 
@@ -22,6 +25,7 @@
 </template>
 
 <script>
+import db from '@/assets/firebase'
 export default {
     name: 'gameBoard',
     data() {
@@ -29,36 +33,58 @@ export default {
             test: true,
             boardRow: 6,
             boardCol: 7,
-            board: []
+            board: [],
+            rooms: {},
+            roomId: this.$route.params.id
         }
     },
     methods: {
+        generateBoard(){
+            let board = []
+        
+            for(let i = 0; i < this.boardRow; i++){
+                board.push([])
+                for(let j= 0; j < this.boardCol; j++){
+                    board[i].push('empty')
+                }
+            }
+            this.board = board
+        },
         colClicked(row, col) {
             console.log(row,col)
             let newRow = this.boardRow - 1;
-            // console.log(this.board[5])
             for(let i = this.boardRow - 1; i >= 0; i-- ) {
                 console.log(this.board[i][col])
                 if(this.board[i][col] == 'empty') {
                     newRow = i ;
-                    console.log("oeoeotoe", i)
                     break
                 }
             }
-            this.$set(this.board[newRow], col, 'green')
+            if(localStorage.name === 'kevin'){
+                this.$set(this.board[newRow], col, 'green')
+            }
+            else{
+                this.$set(this.board[newRow], col, 'red')
+            }
+            this.updateRoomData()
+        },
+        updateRoomData() {
+            db.ref('rooms/' + this.roomId)
+            .update({
+                board: this.board,
+            });
+        },
+        readDB() {
+            db.ref('rooms/' + this.roomId).on('value', (snapshot) => {
+                this.rooms = snapshot.val()
+                this.board = {... this.rooms.board}
+            })
         }
     },
 
     created() {
-        let board = []
-        
-        for(let i = 0; i < this.boardRow; i++){
-            board.push([])
-            for(let j= 0; j < this.boardCol; j++){
-                board[i].push('empty')
-            }
-        }
-        this.board = board
+        this.readDB()
+        this.generateBoard()
     }
 }
 </script>
@@ -72,6 +98,9 @@ export default {
   display: inline-block;
 }
 .green{
-    background-color: green
+    background-color: lightgreen
+}
+.red{
+    background-color: red
 }
 </style>

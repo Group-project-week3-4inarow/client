@@ -22,7 +22,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/game',
+      path: '/game/:id',
       name: 'gameBoard',
       component: () => import(/* webpackChunkName: "game" */ './views/Game.vue')
     }
