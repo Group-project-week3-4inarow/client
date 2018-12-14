@@ -106,15 +106,26 @@ export default {
                             this.generateBoard()
                         }
                     }
-                    else if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3){
+                    if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3){
                         let currentTest = currentBoard[i][j]
                         if (currentBoard[i+1][j] == currentTest && currentBoard[i+2][j] == currentTest && currentBoard[i+3][j] == currentTest){
                             alert(currentBoard[i][j] + 'win')
                             this.generateBoard()
                         }
-                        // else if(currentBoard[i+1][j+1] == currentTest && currentBoard[i+2][j+2] == currentTest && currentBoard[i+3][j+3] == currentTest) {
-                        //     alert(currentBoard[i][j] + 'win')
-                        // }
+                    }
+                    if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3 && j < currentBoard[i].length-3){
+                        let currentTest = currentBoard[i][j]
+                        if(currentBoard[i+1][j+1] == currentTest && currentBoard[i+2][j+2] == currentTest && currentBoard[i+3][j+3] == currentTest) {
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
+                        }
+                    }
+                    if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3 && j < currentBoard[i].length-3){
+                        let currentTest = currentBoard[i][j]
+                        if(currentBoard[i+1][j-1] == currentTest && currentBoard[i+2][j-2] == currentTest && currentBoard[i+3][j-3] == currentTest) {
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
+                        }
                     }
                 }
             }
