@@ -58,9 +58,11 @@ export default {
                     board[i].push('empty')
                 }
             }
+
             this.board = board
         },
         colClicked(row, col) {
+            console.log(row, col)
             let newRow = this.boardRow - 1;
             for(let i = this.boardRow - 1; i >= 0; i-- ) {
                 if(this.board[i][col] == 'empty') {
@@ -86,17 +88,33 @@ export default {
                 this.board = {... this.rooms.board}
                 this.turn = this.rooms.turn
             })
+
+            this.checkWin()
         },
         checkWin(){
-            console.log('check wing')
-            let currentBoard = this.board
+            let currentBoard = []
             for(let i in this.board){
-                for(let j = 0; j < this.board[i].length-3; j++){
-                    if(this.board[i][j] !== 'empty'){
-                        let currentTest = this.board[i][j]
-                        if(this.board[i][j+1] == currentTest && this.board[i][j+2] == currentTest && this.board[i][j+3] == currentTest){
-                            alert(this.board[i][j] + 'win')
+                currentBoard.push(this.board[i])
+            }
+            console.log(currentBoard)
+            for(let i = 0; i < currentBoard.length; i++){
+                for(let j = 0; j < currentBoard[i].length; j++){
+                    if(currentBoard[i][j] !== 'empty' && j < currentBoard[i].length-3){
+                        let currentTest = currentBoard[i][j]
+                        if(currentBoard[i][j+1] == currentTest && currentBoard[i][j+2] == currentTest && currentBoard[i][j+3] == currentTest){
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
                         }
+                    }
+                    else if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3){
+                        let currentTest = currentBoard[i][j]
+                        if (currentBoard[i+1][j] == currentTest && currentBoard[i+2][j] == currentTest && currentBoard[i+3][j] == currentTest){
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
+                        }
+                        // else if(currentBoard[i+1][j+1] == currentTest && currentBoard[i+2][j+2] == currentTest && currentBoard[i+3][j+3] == currentTest) {
+                        //     alert(currentBoard[i][j] + 'win')
+                        // }
                     }
                 }
             }
@@ -105,7 +123,6 @@ export default {
     created() {
         this.readDB() 
         this.generateBoard()
-        // this.checkWin()
     }
 }
 </script>
