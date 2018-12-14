@@ -61,7 +61,6 @@ export default {
             this.board = board
         },
         colClicked(row, col) {
-            console.log(row,col)
             let newRow = this.boardRow - 1;
             for(let i = this.boardRow - 1; i >= 0; i-- ) {
                 if(this.board[i][col] == 'empty') {
@@ -72,7 +71,6 @@ export default {
             this.$set(this.board[newRow], col, localStorage.role)
             this.checkWin()
             this.turn === 'player1' ? this.turn='player2' : this.turn='player1';
-            console.log(this.turn)
             this.updateRoomData()
         },
         updateRoomData() {
@@ -87,12 +85,12 @@ export default {
                 this.rooms = snapshot.val()
                 this.board = {... this.rooms.board}
                 this.turn = this.rooms.turn
-                console.log(this.turn, 'ini turn loh =======')
-                console.log(this.rooms, 'djfkdjfkjdfkjdkfjk')
             })
         },
         checkWin(){
-            for(let i = 0; i < this.board.length; i++){
+            console.log('check wing')
+            let currentBoard = this.board
+            for(let i in this.board){
                 for(let j = 0; j < this.board[i].length-3; j++){
                     if(this.board[i][j] !== 'empty' && this.board[i][j+1] !== 'empty' && this.board[i][j+2] !== 'empty' && this.board[i][j+3] !== 'empty'){
                         alert(this.board[i][j] + 'win')
@@ -103,10 +101,9 @@ export default {
     },
 
     created() {
-        console.log(localStorage.role, 'role at created')
-        console.log(this.turn, 'turn at created')
+        this.readDB() 
         this.generateBoard()
-        this.readDB()
+        // this.checkWin()
     }
 }
 </script>
