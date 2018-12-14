@@ -58,10 +58,11 @@ export default {
                     board[i].push('empty')
                 }
             }
+
             this.board = board
         },
         colClicked(row, col) {
-            console.log(row,col)
+            console.log(row, col)
             let newRow = this.boardRow - 1;
             for(let i = this.boardRow - 1; i >= 0; i-- ) {
                 if(this.board[i][col] == 'empty') {
@@ -72,7 +73,6 @@ export default {
             this.$set(this.board[newRow], col, localStorage.role)
             this.checkWin()
             this.turn === 'player1' ? this.turn='player2' : this.turn='player1';
-            console.log(this.turn)
             this.updateRoomData()
         },
         updateRoomData() {
@@ -87,26 +87,53 @@ export default {
                 this.rooms = snapshot.val()
                 this.board = {... this.rooms.board}
                 this.turn = this.rooms.turn
-                console.log(this.turn, 'ini turn loh =======')
-                console.log(this.rooms, 'djfkdjfkjdfkjdkfjk')
             })
+
+            this.checkWin()
         },
         checkWin(){
-            for(let i = 0; i < this.board.length; i++){
-                for(let j = 0; j < this.board[i].length-3; j++){
-                    if(this.board[i][j] !== 'empty' && this.board[i][j+1] !== 'empty' && this.board[i][j+2] !== 'empty' && this.board[i][j+3] !== 'empty'){
-                        alert(this.board[i][j] + 'win')
+            let currentBoard = []
+            for(let i in this.board){
+                currentBoard.push(this.board[i])
+            }
+            console.log(currentBoard)
+            for(let i = 0; i < currentBoard.length; i++){
+                for(let j = 0; j < currentBoard[i].length; j++){
+                    if(currentBoard[i][j] !== 'empty' && j < currentBoard[i].length-3){
+                        let currentTest = currentBoard[i][j]
+                        if(currentBoard[i][j+1] == currentTest && currentBoard[i][j+2] == currentTest && currentBoard[i][j+3] == currentTest){
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
+                        }
+                    }
+                    if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3){
+                        let currentTest = currentBoard[i][j]
+                        if (currentBoard[i+1][j] == currentTest && currentBoard[i+2][j] == currentTest && currentBoard[i+3][j] == currentTest){
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
+                        }
+                    }
+                    if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3 && j < currentBoard[i].length-3){
+                        let currentTest = currentBoard[i][j]
+                        if(currentBoard[i+1][j+1] == currentTest && currentBoard[i+2][j+2] == currentTest && currentBoard[i+3][j+3] == currentTest) {
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
+                        }
+                    }
+                    if(currentBoard[i][j] !== 'empty' && i < currentBoard.length-3 && j < currentBoard[i].length-3){
+                        let currentTest = currentBoard[i][j]
+                        if(currentBoard[i+1][j-1] == currentTest && currentBoard[i+2][j-2] == currentTest && currentBoard[i+3][j-3] == currentTest) {
+                            alert(currentBoard[i][j] + 'win')
+                            this.generateBoard()
+                        }
                     }
                 }
             }
         }
     },
-
     created() {
-        console.log(localStorage.role, 'role at created')
-        console.log(this.turn, 'turn at created')
+        this.readDB() 
         this.generateBoard()
-        this.readDB()
     }
 }
 </script>
