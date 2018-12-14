@@ -92,14 +92,16 @@ export default {
             let currentBoard = this.board
             for(let i in this.board){
                 for(let j = 0; j < this.board[i].length-3; j++){
-                    if(this.board[i][j] !== 'empty' && this.board[i][j+1] !== 'empty' && this.board[i][j+2] !== 'empty' && this.board[i][j+3] !== 'empty'){
-                        alert(this.board[i][j] + 'win')
+                    if(this.board[i][j] !== 'empty'){
+                        let currentTest = this.board[i][j]
+                        if(this.board[i][j+1] == currentTest && this.board[i][j+2] == currentTest && this.board[i][j+3] == currentTest){
+                            alert(this.board[i][j] + 'win')
+                        }
                     }
                 }
             }
         }
     },
-
     created() {
         this.readDB() 
         this.generateBoard()
