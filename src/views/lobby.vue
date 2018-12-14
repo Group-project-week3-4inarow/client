@@ -16,8 +16,10 @@
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h3 class="card-title"><strong>{{ room.name }}</strong></h3>
-                        <p class="card-text">Player 1 is waiting...</p>
-                        <button type="button" class="btn btn-primary" @click.prevent="joinRoom(room)">Join</button>
+                        <p v-if="room.status == 'waiting'" class="card-text">Player 1 is waiting...</p>
+                        <p v-if="room.status == 'playing'" class="card-text">Currently playing...</p>
+                        <button v-if="room.status == 'waiting'" type="button" class="btn btn-primary" @click.prevent="joinRoom(room)"><router-link :to="`/game/${index}`" style="text-decoration: none; color: white;">Join</router-link></button>
+                        <button v-if="room.status == 'playing'" type="button" class="btn btn-danger" disabled>Full</button>
                     </div>
                 </div>
             </div>
@@ -25,7 +27,7 @@
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-lg btn-warning" @click.prevent="logout">Leave game</button>
+                <!-- <button type="button" class="btn btn-lg btn-warning" @click.prevent="logout">Leave game</button> -->
             </div>
             <div class="col-md-4"></div>
         </div>
@@ -41,7 +43,6 @@ export default {
     return {
       roomName: "",
       rooms: "",
-    //   isJoin: false
     }
   },
   props: {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
@@ -67,15 +68,18 @@ export default {
       }
 
       console.log(board);
-      db.ref('rooms/')
-      .push({
-        name: this.roomName,
-        player1: profile,
-        player2: {},
-        turn: 'player1',
-        board,
-        status: 'waiting'
-      });
+      var newPostRef = db.ref('rooms/')
+                        .push({
+                            name: this.roomName,
+                            player1: profile,
+                            player2: {},
+                            turn: 'player1',
+                            board,
+                            status: 'waiting'
+                        });
+                        
+        var postId = newPostRef.key
+        this.$router.push(`/game/${postId}`)
       localStorage.setItem('role', 'player1')
     },
     readDB() {
@@ -85,6 +89,10 @@ export default {
     },
     joinRoom(room) {
         localStorage.setItem('role', 'player2')
+        db.ref('rooms/')
+                        .update({
+                            status: 'playing'
+                        });
     },
     logout() {
         localStorage.removeItem('name')
