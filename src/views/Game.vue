@@ -50,6 +50,7 @@ export default {
     },
     methods: {
         generateBoard(){
+            // console.log('generateBoard invoked');
             let board = []
         
             for(let i = 0; i < this.boardRow; i++){
@@ -83,15 +84,17 @@ export default {
             });
         },
         readDB() {
+            // Async
             db.ref('rooms/' + this.roomId).on('value', (snapshot) => {
+                // console.log('Value updated');
                 this.rooms = snapshot.val()
                 this.board = {... this.rooms.board}
                 this.turn = this.rooms.turn
+                this.checkWin()
             })
-
-            this.checkWin()
         },
         checkWin(){
+
             let currentBoard = []
             for(let i in this.board){
                 currentBoard.push(this.board[i])
