@@ -53,13 +53,27 @@ export default {
         name: localStorage.getItem('name')
       }
       console.log('oettttt bos')
+      const board = {};
+
+      const row = 6;
+      const col = 7;
+
+      for (let i = 0; i < row; i++) {
+          board[i] = {};
+          for (let j = 0; j < col; j++) {
+              board[i][j] = 'empty';
+          }
+
+      }
+
+      console.log(board);
       db.ref('rooms/')
       .push({
         name: this.roomName,
         player1: profile,
         player2: {},
         turn: 'player1',
-        board: [[123]],
+        board,
         status: 'waiting'
       });
       localStorage.setItem('role', 'player1')
