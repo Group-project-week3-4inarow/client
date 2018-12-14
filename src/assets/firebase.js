@@ -8,6 +8,7 @@ var config = {
     storageBucket: "inarow-ab67e.appspot.com",
     messagingSenderId: "984917154303"
 };
+
 firebase.initializeApp(config);
 var db = firebase.database();
 

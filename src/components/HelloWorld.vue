@@ -6,7 +6,7 @@
       <input type="button" value="SUBMIT!">
     </form>
     <div class="col-sm-4" >
-      <table style="width:100%" v-for="room in rooms" :key="room._id">
+      <table style="width:100%" v-for="(room, index) in rooms" :key="index">
         <tr>
           <th>{{ room.name }}</th>
         </tr>
@@ -50,6 +50,7 @@ export default {
     readDB() {
       db.ref('rooms/').on('value', (snapshot) => {
         this.rooms = snapshot.val()
+        console.log(snapshot.val())
       })
     }
   },
